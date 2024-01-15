@@ -31,7 +31,14 @@ describe("Endpoints API", () => {
 			expect(endpoints).toBeInstanceOf(Object);
 		});
 		test("Get: 200, should return a list of endpoints from json file", () => {
-			return request(app).get("/api").expect(200);
+			return request(app)
+				.get("/api")
+				.expect(200)
+				.then(({ body }) => {
+					const endpointList = body.endpoints;
+					expect(endpointList).toEqual(endpoints);
+					expect(endpointList).not.toBe(endpoints);
+				});
 		});
 	});
 });
