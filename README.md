@@ -1,3 +1,6 @@
 # Northcoders News API
 
-For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/courses/be/nc-news).
+Build and Run
+
+Create env.test & ev.development and add the following code.
+PGDATABASE=$database_name_here$
