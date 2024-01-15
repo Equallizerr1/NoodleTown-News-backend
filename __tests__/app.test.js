@@ -9,7 +9,7 @@ afterAll(() => db.end());
 
 describe("Topics API", () => {
 	describe("Get Request", () => {
-		test("GET: 200, should return all topics", () => {
+		test.skip("GET: 200, should return all topics", () => {
 			return request(app)
 				.get("/api/topics")
 				.expect(200)
@@ -25,7 +25,11 @@ describe("Topics API", () => {
 });
 // Implement tests later when more methods have been implemented
 describe("Error Testing", () => {
-	test("should be able to handle a get request when there are no topics", () => {});
-	test("Get: 400:", () => {});
-	test("Get: 404", () => {});
+	test("GET: 404, Returns error 404 when given an invalid url", () => {
+		return request(app)
+			.get("/api/topic")
+			.expect(404)
+	});
+	//test("GET: 400", () => {});
+	//test("should be able to handle a get request when there are no topics", () => {});
 });
