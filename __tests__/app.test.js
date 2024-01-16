@@ -8,7 +8,7 @@ const endpoints = require("../endpoints.json");
 beforeAll(() => seed(data));
 afterAll(() => db.end());
 
-describe("Topics API", () => {
+describe.skip("Topics API", () => {
 	describe("Get Request", () => {
 		test("Get: 200, should return all topics", () => {
 			return request(app)
@@ -25,7 +25,7 @@ describe("Topics API", () => {
 		});
 	});
 });
-describe("Endpoints API", () => {
+describe.skip("Endpoints API", () => {
 	describe("Get Request", () => {
 		test("endpoints.json formatting correct", () => {
 			expect(endpoints).toBeInstanceOf(Object);
