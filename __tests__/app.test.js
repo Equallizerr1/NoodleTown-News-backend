@@ -46,8 +46,10 @@ describe("API Testing", () => {
 				.expect(200)
 				.then(({ body }) => {
 					const { articles } = body;
+					console.log(articles);
 					expect(articles).toBeInstanceOf(Array);
 					expect(articles.length).not.toBeLessThan(1);
+					expect(articles).toBeSortedBy("created_at", { descending: true });
 					articles.forEach((article) => {
 						expect(article).toHaveProperty("author");
 						expect(article).toHaveProperty("title");
@@ -57,6 +59,7 @@ describe("API Testing", () => {
 						expect(article).toHaveProperty("votes");
 						expect(article).toHaveProperty("article_img_url");
 						expect(article).toHaveProperty("comment_count");
+						expect(article).not.toHaveProperty("body");
 					});
 				});
 		});
