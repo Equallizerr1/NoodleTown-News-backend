@@ -9,7 +9,7 @@ beforeAll(() => seed(data));
 afterAll(() => db.end());
 
 describe("API Testing", () => {
-	describe.skip("Topics Endpoint", () => {
+	describe("Topics Endpoint", () => {
 		test("Get: 200, should return all topics", () => {
 			return request(app)
 				.get("/api/topics")
@@ -24,7 +24,7 @@ describe("API Testing", () => {
 				});
 		});
 	});
-	describe.skip("Endpoints Endpoint", () => {
+	describe("Endpoints Endpoint", () => {
 		test("endpoints.json can be read and formatting correct", () => {
 			expect(endpoints).toBeInstanceOf(Object);
 		});
@@ -41,19 +41,50 @@ describe("API Testing", () => {
 	});
 	describe("Articles Endpoint", () => {
 		test("Get: 200, should return a single article", () => {
-			return request(app).get("/api/articles/1").expect(200);
+			return request(app)
+				.get("/api/articles/3")
+				.expect(200)
+				.then(({ body }) => {
+					const { article } = body;
+					expect(article).toBeInstanceOf(Array);
+					expect(article.length).not.toBeLessThan(1);
+					article.forEach((article) => {
+						expect(article).toHaveProperty("author");
+						expect(article).toHaveProperty("title");
+						expect(article).toHaveProperty("article_id");
+						expect(article).toHaveProperty("body");
+						expect(article).toHaveProperty("topic");
+						expect(article).toHaveProperty("created_at");
+						expect(article).toHaveProperty("votes");
+						expect(article).toHaveProperty("article_img_url");
+					});
+				});
 		});
 	});
 });
-// Implement tests later when more methods have been implemented
+
 describe("Error Testing", () => {
 	describe("Endpoint errors", () => {
-		test("Get: 404, Returns error 404 when given an invalid url", () => {
-			return request(app).get("/api/topic").expect(404).then((response) => {
-				console.log(response.body);
-			})
+		test("Err: 404, Returns error 404 when given an invalid url", () => {
+			return request(app).get("/api/topic").expect(404);
 		});
-		//test("GET: 400", () => {});
-		//test("should be able to handle a get request when there are no matches with valid url", () => {});
+		test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {
+			return request(app)
+				.get("/api/articles/200")
+				.expect(404)
+				.then((response) => {
+					expect(response.body.msg).toBe("article does not exist");
+				});
+		});
+	});
+	describe("SQL errors", () => {
+		test("Err: 400, should be able to handle a get request when there are no matches with valid url", () => {
+			return request(app)
+				.get("/api/articles/article")
+				.expect(400)
+				.then((response) => {
+					expect(response.body.msg).toBe("Bad request");
+				});
+		});
 	});
 });
