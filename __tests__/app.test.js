@@ -9,21 +9,6 @@ beforeAll(() => seed(data));
 afterAll(() => db.end());
 
 describe("API Testing", () => {
-	describe("Topics Endpoint", () => {
-		test("Get: 200, should return all topics", () => {
-			return request(app)
-				.get("/api/topics")
-				.expect(200)
-				.then(({ body }) => {
-					const { topics } = body;
-					expect(topics).toBeInstanceOf(Array);
-					expect(topics.length).not.toBeLessThan(1);
-					topics.forEach((topic) => {
-						expect(Object.keys(topic)).toEqual(["slug", "description"]);
-					});
-				});
-		});
-	});
 	describe("Endpoints Endpoint", () => {
 		test("endpoints.json can be read and formatting correct", () => {
 			expect(endpoints).toBeInstanceOf(Object);
@@ -39,7 +24,42 @@ describe("API Testing", () => {
 				});
 		});
 	});
+	describe("Topics Endpoint", () => {
+		test("Get: 200, should return all topics", () => {
+			return request(app)
+				.get("/api/topics")
+				.expect(200)
+				.then(({ body }) => {
+					const { topics } = body;
+					expect(topics).toBeInstanceOf(Array);
+					expect(topics.length).not.toBeLessThan(1);
+					topics.forEach((topic) => {
+						expect(Object.keys(topic)).toEqual(["slug", "description"]);
+					});
+				});
+		});
+	});
 	describe("Articles Endpoint", () => {
+		test("Get: 200, should return an array of all articles", () => {
+			return request(app)
+				.get("/api/articles")
+				.expect(200)
+				.then(({ body }) => {
+					const { articles } = body;
+					expect(articles).toBeInstanceOf(Array);
+					expect(articles.length).not.toBeLessThan(1);
+					articles.forEach((article) => {
+						expect(article).toHaveProperty("author");
+						expect(article).toHaveProperty("title");
+						expect(article).toHaveProperty("article_id");
+						expect(article).toHaveProperty("topic");
+						expect(article).toHaveProperty("created_at");
+						expect(article).toHaveProperty("votes");
+						expect(article).toHaveProperty("article_img_url");
+						expect(article).toHaveProperty("comment_count");
+					});
+				});
+		});
 		test("Get: 200, should return a single article", () => {
 			return request(app)
 				.get("/api/articles/3")
