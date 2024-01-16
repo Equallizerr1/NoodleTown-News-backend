@@ -2,5 +2,5 @@
 
 Build and Run
 
-Create env.test & ev.development and add the following code.
+Create .env.test & .env.development and add the following code.
 PGDATABASE=$database_name_here$
