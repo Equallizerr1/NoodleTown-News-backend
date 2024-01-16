@@ -6,7 +6,13 @@ Create .env.test & .env.development and add the following code.
 `PGDATABASE=$database_name_here$`
 
 ## Dev
-Once you've installed dependencies with npm install, setup the db with the following.
+Once you've installed dependencies with npm install, setup and seed the database.
+
 `npm run setup-dbs`
-Seed the databse with the following.
+
 `npm run seed`
+
+## Testing
+To run the test suite and seed the db with test data.
+
+`npm run test`
