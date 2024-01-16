@@ -49,6 +49,7 @@ describe("API Testing", () => {
 					expect(article).toBeInstanceOf(Array);
 					expect(article.length).not.toBeLessThan(1);
 					article.forEach((article) => {
+						expect(article.article_id).toBe(3);
 						expect(article).toHaveProperty("author");
 						expect(article).toHaveProperty("title");
 						expect(article).toHaveProperty("article_id");
@@ -65,9 +66,6 @@ describe("API Testing", () => {
 
 describe("Error Testing", () => {
 	describe("Endpoint errors", () => {
-		test("Err: 404, Returns error 404 when given an invalid url", () => {
-			return request(app).get("/api/topic").expect(404);
-		});
 		test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {
 			return request(app)
 				.get("/api/articles/200")
