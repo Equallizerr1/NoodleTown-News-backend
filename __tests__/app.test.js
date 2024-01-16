@@ -8,8 +8,8 @@ const endpoints = require("../endpoints.json");
 beforeAll(() => seed(data));
 afterAll(() => db.end());
 
-describe.skip("Topics API", () => {
-	describe("Get Request", () => {
+describe("API Testing", () => {
+	describe.skip("Topics Endpoint", () => {
 		test("Get: 200, should return all topics", () => {
 			return request(app)
 				.get("/api/topics")
@@ -24,10 +24,8 @@ describe.skip("Topics API", () => {
 				});
 		});
 	});
-});
-describe.skip("Endpoints API", () => {
-	describe("Get Request", () => {
-		test("endpoints.json formatting correct", () => {
+	describe.skip("Endpoints Endpoint", () => {
+		test("endpoints.json can be read and formatting correct", () => {
 			expect(endpoints).toBeInstanceOf(Object);
 		});
 		test("Get: 200, should return a list of endpoints from json file", () => {
@@ -41,13 +39,21 @@ describe.skip("Endpoints API", () => {
 				});
 		});
 	});
+	describe("Articles Endpoint", () => {
+		test("Get: 200, should return a single article", () => {
+			return request(app).get("/api/articles/1").expect(200);
+		});
+	});
 });
-
 // Implement tests later when more methods have been implemented
 describe("Error Testing", () => {
-	test("Get: 404, Returns error 404 when given an invalid url", () => {
-		return request(app).get("/api/topic").expect(404);
+	describe("Endpoint errors", () => {
+		test("Get: 404, Returns error 404 when given an invalid url", () => {
+			return request(app).get("/api/topic").expect(404).then((response) => {
+				console.log(response.body);
+			})
+		});
+		//test("GET: 400", () => {});
+		//test("should be able to handle a get request when there are no matches with valid url", () => {});
 	});
-	//test("GET: 400", () => {});
-	//test("should be able to handle a get request when there are no topics", () => {});
 });

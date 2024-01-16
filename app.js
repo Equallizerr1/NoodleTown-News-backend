@@ -8,8 +8,8 @@ const app = express();
 app.get("/api", getEndpoints);
 
 app.get("/api/topics", getTopics);
-
-// get article by id - parametric
+ 
+// get article by id - parametric /api/articles/:article_id
 app.get("/api/articles/:article_id", getArticleById);
 
 app.use(handleCustomError);
