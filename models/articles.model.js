@@ -31,6 +31,19 @@ exports.selectArticleById = (article_id) => {
 		});
 };
 
-exports.selectAllCommentsForArticle = () => {
-	return;
+exports.selectAllCommentsForArticle = (article_id) => {
+	return db
+		.query(
+			"SELECT * FROM comments WHERE comments.article_id = $1 ORDER BY created_at DESC;",
+			[article_id]
+		)
+		.then(({ rows }) => {
+			if (!rows.length) {
+				return Promise.reject({
+					status: 404,
+					msg: "article has no comments",
+				});
+			}
+			return rows;
+		});
 };
