@@ -40,7 +40,7 @@ describe("API Testing", () => {
 		});
 	});
 	describe("Articles Endpoint", () => {
-		test("Get: 200, should return an array of all articles", () => {
+		test("Get: 200, should return an array of all articles sorted by date", () => {
 			return request(app)
 				.get("/api/articles")
 				.expect(200)
@@ -84,11 +84,6 @@ describe("API Testing", () => {
 					});
 				});
 		});
-	});
-});
-
-describe("Error Testing", () => {
-	describe("Endpoint errors", () => {
 		test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {
 			return request(app)
 				.get("/api/articles/200")
@@ -97,8 +92,6 @@ describe("Error Testing", () => {
 					expect(response.body.msg).toBe("article does not exist");
 				});
 		});
-	});
-	describe("SQL errors", () => {
 		test("Err: 400, should be able to handle a get request when there are no matches with valid url", () => {
 			return request(app)
 				.get("/api/articles/article")

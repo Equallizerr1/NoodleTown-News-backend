@@ -30,3 +30,7 @@ exports.selectArticleById = (article_id) => {
 			return rows;
 		});
 };
+
+exports.selectAllCommentsForArticle = () => {
+	return;
+};
