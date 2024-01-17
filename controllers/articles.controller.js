@@ -7,7 +7,7 @@ const {
 exports.getArticles = (req, res, next) => {
 	selectArticles()
 		.then((articles) => {
-			res.send({ articles });
+			res.send({ articles: articles });
 		})
 		.catch((err) => {
 			next(err);
@@ -18,7 +18,7 @@ exports.getArticleById = (req, res, next) => {
 	const { article_id } = req.params;
 	selectArticleById(article_id)
 		.then((article) => {
-			res.send({ article });
+			res.send({ article: article });
 		})
 		.catch((err) => {
 			next(err);
@@ -28,8 +28,8 @@ exports.getArticleById = (req, res, next) => {
 exports.getAllCommentsForArticle = (req, res, next) => {
 	const { article_id } = req.params;
 	selectAllCommentsForArticle(article_id)
-		.then((article) => {
-			res.send({ article });
+		.then((comments) => {
+			res.send({ comments: comments });
 		})
 		.catch((err) => {
 			next(err);
