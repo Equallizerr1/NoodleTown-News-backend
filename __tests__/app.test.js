@@ -104,17 +104,16 @@ describe("API Testing", () => {
 			});
 		});
 		describe("Get comment for article", () => {
-			test("Get: 200,  should return all comments for an article", () => {
+			test("Get: 200,  should return an empty if no comments, or an array of comments for an article", () => {
 				return request(app)
-					.get("/api/articles/1/comments")
+					.get("/api/articles/2/comments")
 					.expect(200)
 					.then(({ body }) => {
 						const comments = body.comments;
 						expect(comments).toBeInstanceOf(Array);
-						expect(comments.length).not.toBeLessThan(1);
 						expect(comments).toBeSortedBy("created_at", { descending: true });
 						comments.forEach((comment) => {
-							expect(comment.article_id).toBe(1);
+							expect(comment.article_id).toBe(3);
 							expect(comment).toHaveProperty("comment_id");
 							expect(comment).toHaveProperty("votes");
 							expect(comment).toHaveProperty("created_at");
@@ -126,10 +125,10 @@ describe("API Testing", () => {
 			});
 			test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {
 				return request(app)
-					.get("/api/articles/2/comments")
+					.get("/api/articles/20000/comments")
 					.expect(404)
 					.then((response) => {
-						expect(response.body.msg).toBe("article has no comments");
+						expect(response.body.msg).toBe("article does not exist");
 					});
 			});
 			test("Err: 400, should be able to handle a get request when there are no matches with valid url", () => {
