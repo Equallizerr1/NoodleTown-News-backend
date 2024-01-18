@@ -24,14 +24,3 @@ exports.getArticleById = (req, res, next) => {
 			next(err);
 		});
 };
-
-exports.getAllCommentsForArticle = (req, res, next) => {
-	const { article_id } = req.params;
-	selectAllCommentsForArticle(article_id)
-		.then((comments) => {
-			res.send({ comments: comments });
-		})
-		.catch((err) => {
-			next(err);
-		});
-};
