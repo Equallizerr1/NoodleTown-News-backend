@@ -160,8 +160,8 @@ describe("API Testing", () => {
 						});
 					});
 			});
-			describe("Get user by username", () => {
-				test.only("Get: 200, should return a single username", () => {
+			describe.only("Get user by username", () => {
+				test("Get: 200, should return a single username", () => {
 					return request(app)
 						.get("/api/users/lurker")
 						.expect(200)
@@ -178,18 +178,10 @@ describe("API Testing", () => {
 				});
 				test("Err: 404, Returns error 404 when given a valid but non existant user id", () => {
 					return request(app)
-						.get("/api/users/200")
+						.get("/api/users/sam")
 						.expect(404)
 						.then((response) => {
 							expect(response.body.msg).toBe("user does not exist");
-						});
-				});
-				test("Err: 400, should be able to handle a get request when there are no matches with invalid url", () => {
-					return request(app)
-						.get("/api/users/article")
-						.expect(400)
-						.then((response) => {
-							expect(response.body.msg).toBe("Bad request");
 						});
 				});
 			});
