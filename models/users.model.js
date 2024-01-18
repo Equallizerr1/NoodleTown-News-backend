@@ -1,3 +1,5 @@
 exports.selectUsers = () => {
-	return db.query;
+	return db.query("SELECT * FROM users").then(({ rows }) => {
+		return rows;
+	});
 };
