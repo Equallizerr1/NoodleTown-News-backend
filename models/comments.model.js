@@ -11,7 +11,7 @@ exports.selectAllCommentsForArticle = (article_id) => {
 		});
 };
 
-exports.postComment = (article_id) => {
+exports.insertComment = (article_id) => {
 	return db.query().then(() => {
 		return;
 	});

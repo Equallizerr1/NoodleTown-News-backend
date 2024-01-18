@@ -1,7 +1,7 @@
 const { selectArticleById } = require("../models/articles.model");
 const {
 	selectAllCommentsForArticle,
-	postComment,
+	insertComment,
 } = require("../models/comments.model");
 
 exports.getAllCommentsForArticle = (req, res, next) => {
@@ -22,9 +22,9 @@ exports.getAllCommentsForArticle = (req, res, next) => {
 		});
 };
 
-exports.insertComment = () => {
+exports.postComment = () => {
 	const { article_id } = req.params;
-	postComment(article_id)
+	insertComment(article_id)
 		.then(() => {})
 		.catch((err) => {
 			next(err);
