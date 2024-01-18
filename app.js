@@ -5,16 +5,16 @@ const {
 	getArticleById,
 	getArticles,
 } = require("./controllers/articles.controller");
-const {
-	sqlErrorHandler,
-	customErrorHandler,
-	internalServerError,
-} = require("./errors/custom-errors");
+
 const {
 	getAllCommentsForArticle,
 	postComment,
 } = require("./controllers/comments.controller");
-
+const {
+	customErrorHandler,
+	sqlErrorHandler,
+	internalServerError,
+} = require("./errors/errors");
 const app = express();
 app.use(express.json());
 

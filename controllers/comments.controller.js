@@ -7,36 +7,27 @@ const {
 exports.getAllCommentsForArticle = (req, res, next) => {
 	const { article_id } = req.params;
 	selectArticleById(article_id)
+		.then(() => {
+			selectAllCommentsForArticle(article_id).then((comments) => {
+				res.send({ comments: comments });
+			});
+		})
 		.catch((err) => {
 			next(err);
-		})
-		.then(() => {
-			selectAllCommentsForArticle(article_id)
-				.then((comments) => {
-					res.send({ comments: comments });
-				})
-				.catch((err) => {
-					next(err);
-				});
 		});
 };
 
-exports.postComment = () => {
+exports.postComment = (req, res, next) => {
 	const { article_id } = req.params;
-	//const { username, body } = req.body;
-	console.log(article_id);
+	const { body, username } = req.body;
 	selectArticleById(article_id)
+		.then(() => {
+			return insertComment(body, article_id, username);
+		})
+		.then((comment) => {
+			res.status(201).send(comment);
+		})
 		.catch((err) => {
 			next(err);
 		});
-	// .then(() => {
-	// 	insertComment(username, body)
-	// 		.then((comment) => {
-	// 			res.status(201).send({ comment });
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 			next(err);
-	// 		});
-	// });
 };
