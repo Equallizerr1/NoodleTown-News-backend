@@ -103,6 +103,8 @@ describe("API Testing", () => {
 					});
 			});
 		});
+	});
+	describe("Comments Endpoint", () => {
 		describe("Get comment for article", () => {
 			test("Get: 200,  should return an empty if no comments, or an array of comments for an article", () => {
 				return request(app)
@@ -121,6 +123,20 @@ describe("API Testing", () => {
 							expect(comment).toHaveProperty("body");
 							expect(comment).toHaveProperty("article_id");
 						});
+					});
+			});
+			test("Post: 201, should post a comment into comments", () => {
+				return request(app)
+					.post("/api/articles/1/comments")
+					.send({
+						username: "butter_bridge",
+						body: "hello world",
+					})
+					.expect(201)
+					.then(({ body }) => {
+						console.log(body);
+						expect(body.author).toBe("butter_bridge");
+						expect(body.body).toBe("hello world");
 					});
 			});
 			test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {

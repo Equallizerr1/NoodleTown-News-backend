@@ -11,13 +11,13 @@ exports.selectAllCommentsForArticle = (article_id) => {
 		});
 };
 
-exports.insertComment = ({ author, body }) => {
-	return db
-		.query("INSERT INTO comments (author, body) VALUES ($1, $2) RETURNING*;", [
-			author,
-			body,
-		])
-		.then((result) => {
-			return result.rows[0];
-		});
-};
+// exports.insertComment = ({ body, username }) => {
+// 	return db
+// 		.query("INSERT INTO comments (body, author) VALUES ($1, $2) RETURNING*;", [
+// 			body,
+// 			username,
+// 		])
+// 		.then((result) => {
+// 			return result.rows;
+// 		});
+// };
