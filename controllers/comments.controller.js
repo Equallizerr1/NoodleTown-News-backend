@@ -24,8 +24,11 @@ exports.getAllCommentsForArticle = (req, res, next) => {
 
 exports.postComment = () => {
 	const { article_id } = req.params;
-	insertComment(article_id)
-		.then(() => {})
+	const newComment = req.body;
+	insertComment(newComment)
+		.then((comment) => {
+			res.status(201).send({ comment });
+		})
 		.catch((err) => {
 			next(err);
 		});
