@@ -94,7 +94,7 @@ describe("API Testing", () => {
 						expect(response.body.msg).toBe("article does not exist");
 					});
 			});
-			test("Err: 400, should be able to handle a get request when there are no matches with valid url", () => {
+			test("Err: 400, should be able to handle a get request when there are no matches with invalid url", () => {
 				return request(app)
 					.get("/api/articles/article")
 					.expect(400)
@@ -159,6 +159,40 @@ describe("API Testing", () => {
 							]);
 						});
 					});
+			});
+			describe("Get user by username", () => {
+				test("Get: 200, should return a single username", () => {
+					return request(app)
+						.get("/api/users/1")
+						.expect(200)
+						.then(({ body }) => {
+							const user = body.username;
+							expect(user).toBeInstanceOf(Array);
+							expect(user.length).not.toBeLessThan(1);
+							user.forEach((user) => {
+								expect(user.user_id).toBe(1);
+								expect(user).toHaveProperty("username");
+								expect(user).toHaveProperty("name");
+								expect(user).toHaveProperty("avatar_url");
+							});
+						});
+				});
+				test("Err: 404, Returns error 404 when given a valid but non existant user id", () => {
+					return request(app)
+						.get("/api/users/200")
+						.expect(404)
+						.then((response) => {
+							expect(response.body.msg).toBe("user does not exist");
+						});
+				});
+				test("Err: 400, should be able to handle a get request when there are no matches with invalid url", () => {
+					return request(app)
+						.get("/api/users/article")
+						.expect(400)
+						.then((response) => {
+							expect(response.body.msg).toBe("Bad request");
+						});
+				});
 			});
 		});
 	});

@@ -5,3 +5,9 @@ exports.selectUsers = () => {
 		return rows;
 	});
 };
+
+exports.selectUserUsername = () => {
+	return db.query("SELECT * FROM users").then(({ rows }) => {
+		return rows;
+	});
+};

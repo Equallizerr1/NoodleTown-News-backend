@@ -13,7 +13,7 @@ const { sqlErrorHandler } = require("./errors/sql-errors");
 const {
 	getAllCommentsForArticle,
 } = require("./controllers/comments.controller");
-const { getUsers } = require("./controllers/users.controller");
+const { getUsers, getUserUsername } = require("./controllers/users.controller");
 
 const app = express();
 
@@ -26,6 +26,7 @@ app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getAllCommentsForArticle);
 
 app.get("/api/users", getUsers);
+app.get("/api/users/:username", getUserUsername);
 
 app.post("/api/articles/:article_id/comments");
 
