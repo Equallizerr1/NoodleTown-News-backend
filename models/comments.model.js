@@ -10,3 +10,9 @@ exports.selectAllCommentsForArticle = (article_id) => {
 			return result.rows;
 		});
 };
+
+exports.postComment = (article_id) => {
+	return db.query().then(() => {
+		return;
+	});
+};
