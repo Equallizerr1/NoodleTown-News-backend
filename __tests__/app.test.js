@@ -142,22 +142,24 @@ describe("API Testing", () => {
 		});
 	});
 	describe("Users Endpoint", () => {
-		test.only("Get: 200, Returns and array of users", () => {
-			return request(app)
-				.get("/api/users")
-				.expect(200)
-				.then(({ body }) => {
-					const users = body.users;
-					expect(users).toBeInstanceOf(Array);
-					expect(users.length).not.toBeLessThan(1);
-					users.forEach((user) => {
-						expect(Object.keys(user)).toEqual([
-							"username",
-							"name",
-							"avatar_url",
-						]);
+		describe("Get Users", () => {
+			test("Get: 200, Returns and array of users", () => {
+				return request(app)
+					.get("/api/users")
+					.expect(200)
+					.then(({ body }) => {
+						const users = body.users;
+						expect(users).toBeInstanceOf(Array);
+						expect(users.length).not.toBeLessThan(1);
+						users.forEach((user) => {
+							expect(Object.keys(user)).toEqual([
+								"username",
+								"name",
+								"avatar_url",
+							]);
+						});
 					});
-				});
+			});
 		});
 	});
 });
