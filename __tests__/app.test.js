@@ -141,6 +141,13 @@ describe("API Testing", () => {
 			});
 		});
 	});
+	describe("Comments Endpoint", () => {
+		describe("Delete comment by id", () => {
+			test.only("should be able to delete a comment by it's id", () => {
+				return request(app).delete("/api/comments/1").expect(204);
+			});
+		});
+	});
 	describe("Users Endpoint", () => {
 		describe("Get Users", () => {
 			test("Get: 200, Returns and array of users", () => {

@@ -12,6 +12,7 @@ const {
 const { sqlErrorHandler } = require("./errors/sql-errors");
 const {
 	getAllCommentsForArticle,
+	deleteCommentById,
 } = require("./controllers/comments.controller");
 const { getUsers } = require("./controllers/users.controller");
 
@@ -28,6 +29,8 @@ app.get("/api/articles/:article_id/comments", getAllCommentsForArticle);
 app.get("/api/users", getUsers);
 
 app.post("/api/articles/:article_id/comments");
+
+app.delete("/api/comments/:comment_id", deleteCommentById);
 
 app.use(customErrorHandler);
 
