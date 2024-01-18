@@ -11,7 +11,8 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.getUserUsername = (req, res, next) => {
-	selectUserUsername()
+	const { username } = req.params;
+	selectUserUsername(username)
 		.then((user) => {
 			res.send(user);
 		})

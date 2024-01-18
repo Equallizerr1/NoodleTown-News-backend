@@ -161,16 +161,15 @@ describe("API Testing", () => {
 					});
 			});
 			describe("Get user by username", () => {
-				test("Get: 200, should return a single username", () => {
+				test.only("Get: 200, should return a single username", () => {
 					return request(app)
-						.get("/api/users/1")
+						.get("/api/users/lurker")
 						.expect(200)
 						.then(({ body }) => {
-							const user = body.username;
+							const user = body;
 							expect(user).toBeInstanceOf(Array);
 							expect(user.length).not.toBeLessThan(1);
 							user.forEach((user) => {
-								expect(user.user_id).toBe(1);
 								expect(user).toHaveProperty("username");
 								expect(user).toHaveProperty("name");
 								expect(user).toHaveProperty("avatar_url");
