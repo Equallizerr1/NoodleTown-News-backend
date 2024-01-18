@@ -141,10 +141,26 @@ describe("API Testing", () => {
 			});
 		});
 	});
-	describe("Comments Endpoint", () => {
+	describe.only("Comments Endpoint", () => {
 		describe("Delete comment by id", () => {
-			test.only("should be able to delete a comment by it's id", () => {
+			test("Delete: 204, should be able to delete a comment by it's id", () => {
 				return request(app).delete("/api/comments/1").expect(204);
+			});
+			test("Delete: 404, responds with an appropriate status and error message when given a non-existent id", () => {
+				return request(app)
+					.delete("/api/comments/1000")
+					.expect(404)
+					.then((response) => {
+						expect(response.body.msg).toBe("comment does not exist");
+					});
+			});
+			test("Delete: 400, responds with an appropriate status and error message when given an invalid id", () => {
+				return request(app)
+					.delete("/api/comments/not-a-comment")
+					.expect(400)
+					.then((response) => {
+						expect(response.body.msg).toBe("Bad request");
+					});
 			});
 		});
 	});
