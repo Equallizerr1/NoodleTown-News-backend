@@ -30,7 +30,7 @@ exports.patchArticle = (req, res, next) => {
 	const reqBody = req.body;
 	updateArticle(article_id, reqBody)
 		.then((article) => {
-			res.send(article);
+			res.send({ article });
 		})
 		.catch((err) => {
 			next(err);

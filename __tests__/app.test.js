@@ -112,16 +112,15 @@ describe("API Testing", () => {
 					.send({ inc_votes: newVote })
 					.expect(200)
 					.then(({ body }) => {
-						expect(body.article_id).toBe(1);
-						expect(body.votes).toBe(85);
-						expect(body).toHaveProperty("author");
-						expect(body).toHaveProperty("title");
-						expect(body).toHaveProperty("article_id");
-						expect(body).toHaveProperty("body");
-						expect(body).toHaveProperty("topic");
-						expect(body).toHaveProperty("created_at");
-						expect(body).toHaveProperty("votes");
-						expect(body).toHaveProperty("article_img_url");
+						expect(body.article.article_id).toBe(1);
+						expect(body.article.votes).toBe(85);
+						expect(body.article).toHaveProperty("author");
+						expect(body.article).toHaveProperty("title");
+						expect(body.article).toHaveProperty("article_id");
+						expect(body.article).toHaveProperty("body");
+						expect(body.article).toHaveProperty("topic");
+						expect(body.article).toHaveProperty("created_at");
+						expect(body.article).toHaveProperty("article_img_url");
 					});
 			});
 			test("Err: 404, Returns error 404 when given a valid but non existant article id", () => {
@@ -135,7 +134,7 @@ describe("API Testing", () => {
 					});
 			});
 			test("Err: 400, should be able to handle a get request when there are no matches with invalid url", () => {
-				const newVote = "string";
+				const newVote = "two";
 				return request(app)
 					.patch("/api/articles/article")
 					.send({ inc_votes: newVote })
