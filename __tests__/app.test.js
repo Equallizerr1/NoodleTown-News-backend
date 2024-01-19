@@ -5,8 +5,8 @@ const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data");
 const endpoints = require("../endpoints.json");
 
-beforeEach(() => seed(data));
-//beforeAll(() => seed(data));
+//beforeEach(() => seed(data));
+beforeAll(() => seed(data));
 afterAll(() => db.end());
 
 describe("API Testing", () => {
@@ -152,6 +152,19 @@ describe("API Testing", () => {
 					.expect(400)
 					.then((response) => {
 						expect(response.body.msg).toBe("Bad request");
+					});
+			});
+		});
+		describe.only("Topic Query", () => {
+			test("should return all articles by given topic query", () => {
+				return request(app)
+					.get("/api/articles?topic=cooking")
+					.expect(200)
+					.then(({ body }) => {
+						expect(body.topics).toHaveLength(12);
+						body.topics.forEach((topic) => {
+							expect(topic.topic).toBe("cooking");
+						});
 					});
 			});
 		});
