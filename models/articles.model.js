@@ -31,7 +31,8 @@ exports.selectArticleById = (article_id) => {
 };
 
 exports.updateArticle = (article_id, reqBody) => {
-	console.log(article_id, reqBody.inc_votes);
+	if (!reqBody.inc_votes)
+		return Promise.reject({ status: 400, msg: "Bad request" });
 	return db
 		.query(
 			`UPDATE articles SET votes = votes + $2 
@@ -40,6 +41,12 @@ exports.updateArticle = (article_id, reqBody) => {
 			[article_id, reqBody.inc_votes]
 		)
 		.then(({ rows }) => {
+			if (!rows.length) {
+				return Promise.reject({
+					status: 404,
+					msg: "article does not exist",
+				});
+			}
 			return rows[0];
 		});
 };
