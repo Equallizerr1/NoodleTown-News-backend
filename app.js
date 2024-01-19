@@ -33,7 +33,7 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getAllCommentsForArticle);
-
+app.patch("/api/articles/:article_id")
 
 app.post("/api/articles/:article_id/comments", postComment);
 

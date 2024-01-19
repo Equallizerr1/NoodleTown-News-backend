@@ -29,3 +29,7 @@ exports.selectArticleById = (article_id) => {
 			return rows;
 		});
 };
+
+exports.updateArticle = (article_id) => {
+	return;
+};
