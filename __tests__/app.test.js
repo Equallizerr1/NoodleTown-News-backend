@@ -103,6 +103,8 @@ describe("API Testing", () => {
 					});
 			});
 		});
+	});
+	describe("Comments Endpoint", () => {
 		describe("Get comment for article", () => {
 			test("Get: 200,  should return an empty if no comments, or an array of comments for an article", () => {
 				return request(app)
@@ -123,7 +125,7 @@ describe("API Testing", () => {
 						});
 					});
 			});
-			test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {
+			test("Err: 404, Returns error 404 when given a valid but non existant article id", () => {
 				return request(app)
 					.get("/api/articles/20000/comments")
 					.expect(404)
@@ -134,6 +136,79 @@ describe("API Testing", () => {
 			test("Err: 400, should be able to handle a get request when there are no matches with valid url", () => {
 				return request(app)
 					.get("/api/articles/article/comments")
+					.expect(400)
+					.then((response) => {
+						expect(response.body.msg).toBe("Bad request");
+					});
+			});
+		});
+		describe("Post comment to article", () => {
+			test("Post: 201, should post a comment into comments", () => {
+				return request(app)
+					.post("/api/articles/1/comments")
+					.send({
+						username: "butter_bridge",
+						body: "hello world",
+					})
+					.expect(201)
+					.then(({ body }) => {
+						expect(body.author).toBe("butter_bridge");
+						expect(body.body).toBe("hello world");
+					});
+			});
+			test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {
+				return request(app)
+					.post("/api/articles/20000/comments")
+					.send({
+						username: "butter_bridge",
+						body: "hello world",
+					})
+					.expect(404)
+					.then((response) => {
+						expect(response.body.msg).toBe("article does not exist");
+					});
+			});
+			test("Err: 400, Return error 400 if not provided with a username key - PSQL ERROR", () => {
+				return request(app)
+					.post("/api/articles/2/comments")
+					.send({
+						body: "hello world",
+					})
+					.expect(400)
+					.then((response) => {
+						expect(response.body.msg).toBe("Bad request");
+					});
+			});
+			test("Err: 400, Return error 400 if not provided a body key", () => {
+				return request(app)
+					.post("/api/articles/2/comments")
+					.send({
+						username: "butter_bridge",
+					})
+					.expect(400)
+					.then((response) => {
+						expect(response.body.msg).toBe("Bad request");
+					});
+			});
+			// test for checking if username is in the DB
+		});
+	});
+	describe.only("Comments Endpoint", () => {
+		describe("Delete comment by id", () => {
+			test("Delete: 204, should be able to delete a comment by it's id", () => {
+				return request(app).delete("/api/comments/1").expect(204);
+			});
+			test("Delete: 404, responds with an appropriate status and error message when given a non-existent id", () => {
+				return request(app)
+					.delete("/api/comments/1000")
+					.expect(404)
+					.then((response) => {
+						expect(response.body.msg).toBe("comment does not exist");
+					});
+			});
+			test("Delete: 400, responds with an appropriate status and error message when given an invalid id", () => {
+				return request(app)
+					.delete("/api/comments/not-a-comment")
 					.expect(400)
 					.then((response) => {
 						expect(response.body.msg).toBe("Bad request");

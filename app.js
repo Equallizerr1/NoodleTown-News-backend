@@ -5,35 +5,47 @@ const {
 	getArticleById,
 	getArticles,
 } = require("./controllers/articles.controller");
-const {
-	customErrorHandler,
-	internalServerError,
-} = require("./errors/custom-errors");
-const { sqlErrorHandler } = require("./errors/sql-errors");
+
 const {
 	getAllCommentsForArticle,
+	deleteCommentById,
+	postComment,
 } = require("./controllers/comments.controller");
+
 const { getUsers, getUserUsername } = require("./controllers/users.controller");
 
+const {
+	customErrorHandler,
+	sqlErrorHandler,
+	internalServerError,
+} = require("./errors/errors");
+
+
 const app = express();
+app.use(express.json());
 
 app.get("/api", getEndpoints);
 
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles", getArticles);
+
 app.get("/api/articles/:article_id", getArticleById);
+
 app.get("/api/articles/:article_id/comments", getAllCommentsForArticle);
+
+
+app.post("/api/articles/:article_id/comments", postComment);
+
+
+app.delete("/api/comments/:comment_id", deleteCommentById);
 
 app.get("/api/users", getUsers);
 app.get("/api/users/:username", getUserUsername);
 
-app.post("/api/articles/:article_id/comments");
 
 app.use(customErrorHandler);
-
 app.use(sqlErrorHandler);
-
 app.use(internalServerError);
 
 module.exports = app;
