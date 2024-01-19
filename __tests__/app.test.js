@@ -72,6 +72,7 @@ describe("API Testing", () => {
 					.expect(200)
 					.then(({ body }) => {
 						const article = body.article;
+						console.log(article);
 						expect(article).toBeInstanceOf(Array);
 						expect(article.length).not.toBeLessThan(1);
 						article.forEach((article) => {
@@ -84,6 +85,7 @@ describe("API Testing", () => {
 							expect(article).toHaveProperty("created_at");
 							expect(article).toHaveProperty("votes");
 							expect(article).toHaveProperty("article_img_url");
+							expect(article).toHaveProperty("comment_count");
 						});
 					});
 			});
@@ -155,7 +157,7 @@ describe("API Testing", () => {
 					});
 			});
 		});
-		describe.only("Topic Query", () => {
+		describe("Topic Query", () => {
 			test("should return all articles by given topic query", () => {
 				return request(app)
 					.get("/api/articles?topic=mitch")
