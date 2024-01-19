@@ -155,10 +155,10 @@ describe("API Testing", () => {
 					});
 			});
 		});
-		describe.only("Topic Query", () => {
+		describe("Topic Query", () => {
 			test("should return all articles by given topic query", () => {
 				return request(app)
-					.get("/api/articles?topic=cooking")
+					.get("/api/articles?topic=coding")
 					.expect(200)
 					.then(({ body }) => {
 						expect(body.topics).toHaveLength(12);
