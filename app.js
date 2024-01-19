@@ -10,11 +10,16 @@ const {
 	getAllCommentsForArticle,
 	postComment,
 } = require("./controllers/comments.controller");
+
 const {
 	customErrorHandler,
 	sqlErrorHandler,
 	internalServerError,
 } = require("./errors/errors");
+
+const { getUsers } = require("./controllers/users.controller");
+
+
 const app = express();
 app.use(express.json());
 
@@ -28,7 +33,10 @@ app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getAllCommentsForArticle);
 
+
 app.post("/api/articles/:article_id/comments", postComment);
+
+app.get("/api/users", getUsers);
 
 app.use(customErrorHandler);
 app.use(sqlErrorHandler);
