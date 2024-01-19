@@ -6,7 +6,6 @@ const {
 
 exports.getArticles = (req, res, next) => {
 	const { topic } = req.query;
-	console.log(topic);
 	selectArticles(topic)
 		.then((articles) => {
 			res.send({ articles: articles });

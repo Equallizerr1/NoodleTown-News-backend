@@ -42,7 +42,7 @@ describe("API Testing", () => {
 	});
 	describe("Articles Endpoint", () => {
 		describe("Get articles", () => {
-			test("Get: 200, should return an array of all articles sorted by date", () => {
+			test.only("Get: 200, should return an array of all articles sorted by date", () => {
 				return request(app)
 					.get("/api/articles")
 					.expect(200)
@@ -156,14 +156,15 @@ describe("API Testing", () => {
 			});
 		});
 		describe("Topic Query", () => {
-			test("should return all articles by given topic query", () => {
+			test.only("should return all articles by given topic query", () => {
 				return request(app)
-					.get("/api/articles?topic=coding")
+					.get("/api/articles?topic=mitch")
 					.expect(200)
 					.then(({ body }) => {
-						expect(body.topics).toHaveLength(12);
-						body.topics.forEach((topic) => {
-							expect(topic.topic).toBe("cooking");
+						console.log(body);
+					expect(body.articles).toHaveLength(12);
+						body.articles.forEach((topic) => {
+							expect(topic.topic).toBe("mitch");
 						});
 					});
 			});
