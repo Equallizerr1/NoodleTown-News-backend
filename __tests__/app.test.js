@@ -5,7 +5,8 @@ const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data");
 const endpoints = require("../endpoints.json");
 
-beforeAll(() => seed(data));
+beforeEach(() => seed(data));
+//beforeAll(() => seed(data));
 afterAll(() => db.end());
 
 describe("API Testing", () => {
@@ -86,7 +87,7 @@ describe("API Testing", () => {
 						});
 					});
 			});
-			test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {
+			test("Err: 404, Returns error 404 when given a valid but non existant article id", () => {
 				return request(app)
 					.get("/api/articles/200")
 					.expect(404)
@@ -97,6 +98,57 @@ describe("API Testing", () => {
 			test("Err: 400, should be able to handle a get request when there are no matches with invalid url", () => {
 				return request(app)
 					.get("/api/articles/article")
+					.expect(400)
+					.then((response) => {
+						expect(response.body.msg).toBe("Bad request");
+					});
+			});
+		});
+		describe("Patch article", () => {
+			test("Patch: 200, Return updated article", () => {
+				const newVote = -15;
+				return request(app)
+					.patch("/api/articles/1")
+					.send({ inc_votes: newVote })
+					.expect(200)
+					.then(({ body }) => {
+						expect(body.article.article_id).toBe(1);
+						expect(body.article.votes).toBe(85);
+						expect(body.article).toHaveProperty("author");
+						expect(body.article).toHaveProperty("title");
+						expect(body.article).toHaveProperty("article_id");
+						expect(body.article).toHaveProperty("body");
+						expect(body.article).toHaveProperty("topic");
+						expect(body.article).toHaveProperty("created_at");
+						expect(body.article).toHaveProperty("article_img_url");
+					});
+			});
+			test("Err: 404, Returns error 404 when given a valid but non existant article id", () => {
+				const newVote = -15;
+				return request(app)
+					.patch("/api/articles/9999999")
+					.send({ inc_votes: newVote })
+					.expect(404)
+					.then((response) => {
+						expect(response.body.msg).toBe("article does not exist");
+					});
+			});
+			test("Err: 400, should be able to handle a get request when there are no matches with invalid url", () => {
+				const newVote = "two";
+				return request(app)
+					.patch("/api/articles/article")
+					.send({ inc_votes: newVote })
+					.expect(400)
+					.then((response) => {
+						expect(response.body.msg).toBe("Bad request");
+					});
+			});
+			test("Err: 400, Return error 400 if not provided with a inc_votes key", () => {
+				return request(app)
+					.patch("/api/articles/2/")
+					.send({
+						body: "hello world",
+					})
 					.expect(400)
 					.then((response) => {
 						expect(response.body.msg).toBe("Bad request");
@@ -156,7 +208,7 @@ describe("API Testing", () => {
 						expect(body.body).toBe("hello world");
 					});
 			});
-			test("Err: 404, Returns error 404 when given a valid but non existant article is", () => {
+			test("Err: 404, Returns error 404 when given a valid but non existant article id", () => {
 				return request(app)
 					.post("/api/articles/20000/comments")
 					.send({

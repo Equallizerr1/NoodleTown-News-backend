@@ -29,3 +29,24 @@ exports.selectArticleById = (article_id) => {
 			return rows;
 		});
 };
+
+exports.updateArticle = (article_id, reqBody) => {
+	if (!reqBody.inc_votes)
+		return Promise.reject({ status: 400, msg: "Bad request" });
+	return db
+		.query(
+			`UPDATE articles SET votes = votes + $2 
+			WHERE article_id = $1
+			RETURNING*`,
+			[article_id, reqBody.inc_votes]
+		)
+		.then(({ rows }) => {
+			if (!rows.length) {
+				return Promise.reject({
+					status: 404,
+					msg: "article does not exist",
+				});
+			}
+			return rows[0];
+		});
+};
