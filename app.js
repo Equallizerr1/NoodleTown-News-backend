@@ -12,13 +12,13 @@ const {
 	postComment,
 } = require("./controllers/comments.controller");
 
+const { getUsers, getUserUsername } = require("./controllers/users.controller");
+
 const {
 	customErrorHandler,
 	sqlErrorHandler,
 	internalServerError,
 } = require("./errors/errors");
-
-const { getUsers } = require("./controllers/users.controller");
 
 
 const app = express();
@@ -41,6 +41,7 @@ app.post("/api/articles/:article_id/comments", postComment);
 app.delete("/api/comments/:comment_id", deleteCommentById);
 
 app.get("/api/users", getUsers);
+app.get("/api/users/:username", getUserUsername);
 
 
 app.use(customErrorHandler);
