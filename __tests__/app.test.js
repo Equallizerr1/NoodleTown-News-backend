@@ -168,7 +168,7 @@ describe("API Testing", () => {
 						expect(response.body.msg).toBe("article does not exist");
 					});
 			});
-			test("Err: 400, Return error 400 if not provided with a username key - PSQL ERROR", () => {
+			test("Err: 400, Return error 400 if not provided with a username key", () => {
 				return request(app)
 					.post("/api/articles/2/comments")
 					.send({
@@ -190,10 +190,19 @@ describe("API Testing", () => {
 						expect(response.body.msg).toBe("Bad request");
 					});
 			});
-			// test for checking if username is in the DB
+			test("Err: 404, Return error 404 if provided with a username key that is not in the DB", () => {
+				return request(app)
+					.post("/api/articles/2/comments")
+					.send({
+						username: "sam",
+						body: "hello world",
+					})
+					.expect(404)
+					.then((response) => {
+						expect(response.body.msg).toBe("user does not exist");
+					});
+			});
 		});
-	});
-	describe.only("Comments Endpoint", () => {
 		describe("Delete comment by id", () => {
 			test("Delete: 204, should be able to delete a comment by it's id", () => {
 				return request(app).delete("/api/comments/1").expect(204);
@@ -235,30 +244,30 @@ describe("API Testing", () => {
 						});
 					});
 			});
-			describe.only("Get user by username", () => {
-				test("Get: 200, should return a single username", () => {
-					return request(app)
-						.get("/api/users/lurker")
-						.expect(200)
-						.then(({ body }) => {
-							const user = body;
-							expect(user).toBeInstanceOf(Array);
-							expect(user.length).not.toBeLessThan(1);
-							user.forEach((user) => {
-								expect(user).toHaveProperty("username");
-								expect(user).toHaveProperty("name");
-								expect(user).toHaveProperty("avatar_url");
-							});
+		});
+		describe("Get user by username", () => {
+			test("Get: 200, should return a single username", () => {
+				return request(app)
+					.get("/api/users/lurker")
+					.expect(200)
+					.then(({ body }) => {
+						const user = body;
+						expect(user).toBeInstanceOf(Array);
+						expect(user.length).not.toBeLessThan(1);
+						user.forEach((user) => {
+							expect(user).toHaveProperty("username");
+							expect(user).toHaveProperty("name");
+							expect(user).toHaveProperty("avatar_url");
 						});
-				});
-				test("Err: 404, Returns error 404 when given a valid but non existant user id", () => {
-					return request(app)
-						.get("/api/users/sam")
-						.expect(404)
-						.then((response) => {
-							expect(response.body.msg).toBe("user does not exist");
-						});
-				});
+					});
+			});
+			test("Err: 404, Returns error 404 when given a valid but non existant user id", () => {
+				return request(app)
+					.get("/api/users/sam")
+					.expect(404)
+					.then((response) => {
+						expect(response.body.msg).toBe("user does not exist");
+					});
 			});
 		});
 	});
