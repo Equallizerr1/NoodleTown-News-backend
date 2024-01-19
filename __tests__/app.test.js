@@ -5,8 +5,8 @@ const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data");
 const endpoints = require("../endpoints.json");
 
-beforeEach(() => seed(data));
-//beforeAll(() => seed(data));
+//beforeEach(() => seed(data));
+beforeAll(() => seed(data));
 afterAll(() => db.end());
 
 describe("API Testing", () => {
@@ -152,6 +152,37 @@ describe("API Testing", () => {
 					.expect(400)
 					.then((response) => {
 						expect(response.body.msg).toBe("Bad request");
+					});
+			});
+		});
+		describe.only("Topic Query", () => {
+			test("should return all articles by given topic query", () => {
+				return request(app)
+					.get("/api/articles?topic=mitch")
+					.expect(200)
+					.then(({ body }) => {
+						console.log(body);
+						expect(body.articles).toHaveLength(12);
+						body.articles.forEach((topic) => {
+							expect(topic.topic).toBe("mitch");
+							expect(topic).toHaveProperty("author");
+							expect(topic).toHaveProperty("title");
+							expect(topic).toHaveProperty("article_id");
+							expect(topic).toHaveProperty("topic");
+							expect(topic).toHaveProperty("created_at");
+							expect(topic).toHaveProperty("votes");
+							expect(topic).toHaveProperty("article_img_url");
+							expect(topic).toHaveProperty("comment_count");
+							expect(topic).not.toHaveProperty("body");
+						});
+					});
+			});
+			test("GET:404, Returns error 404 when given a valid but non existant topic query", () => {
+				return request(app)
+					.get("/api/articles?topic=umbrella")
+					.expect(404)
+					.then(({ body }) => {
+						expect(body.msg).toBe("no articles found");
 					});
 			});
 		});
