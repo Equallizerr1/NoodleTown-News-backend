@@ -103,6 +103,19 @@ describe("API Testing", () => {
 					});
 			});
 		});
+		describe("Patch article", () => {
+			test("Patch: 200, Return updated article", () => {
+				const newVote = -15;
+				return request(app)
+					.patch("/api/articles/1")
+					.send({ inc_votes: newVote })
+					.expect(200)
+					.then(({ body }) => {
+						console.log(body);
+					});
+			});
+			
+		});
 	});
 	describe("Comments Endpoint", () => {
 		describe("Get comment for article", () => {

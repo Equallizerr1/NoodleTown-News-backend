@@ -4,6 +4,7 @@ const { getEndpoints } = require("./controllers/endpoints.controller");
 const {
 	getArticleById,
 	getArticles,
+	patchArticle,
 } = require("./controllers/articles.controller");
 
 const {
@@ -20,7 +21,6 @@ const {
 	internalServerError,
 } = require("./errors/errors");
 
-
 const app = express();
 app.use(express.json());
 
@@ -33,16 +33,14 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getAllCommentsForArticle);
-app.patch("/api/articles/:article_id")
+app.patch("/api/articles/:article_id", patchArticle);
 
 app.post("/api/articles/:article_id/comments", postComment);
-
 
 app.delete("/api/comments/:comment_id", deleteCommentById);
 
 app.get("/api/users", getUsers);
 app.get("/api/users/:username", getUserUsername);
-
 
 app.use(customErrorHandler);
 app.use(sqlErrorHandler);
