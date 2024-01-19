@@ -1,7 +1,6 @@
 const {
 	selectArticleById,
 	selectArticles,
-	selectAllCommentsForArticle,
 } = require("../models/articles.model");
 
 exports.getArticles = (req, res, next) => {
