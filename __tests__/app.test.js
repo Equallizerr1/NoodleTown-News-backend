@@ -42,7 +42,7 @@ describe("API Testing", () => {
 	});
 	describe("Articles Endpoint", () => {
 		describe("Get articles", () => {
-			test.only("Get: 200, should return an array of all articles sorted by date", () => {
+			test("Get: 200, should return an array of all articles sorted by date", () => {
 				return request(app)
 					.get("/api/articles")
 					.expect(200)
@@ -155,17 +155,34 @@ describe("API Testing", () => {
 					});
 			});
 		});
-		describe("Topic Query", () => {
-			test.only("should return all articles by given topic query", () => {
+		describe.only("Topic Query", () => {
+			test("should return all articles by given topic query", () => {
 				return request(app)
 					.get("/api/articles?topic=mitch")
 					.expect(200)
 					.then(({ body }) => {
 						console.log(body);
-					expect(body.articles).toHaveLength(12);
+						expect(body.articles).toHaveLength(12);
 						body.articles.forEach((topic) => {
 							expect(topic.topic).toBe("mitch");
+							expect(topic).toHaveProperty("author");
+							expect(topic).toHaveProperty("title");
+							expect(topic).toHaveProperty("article_id");
+							expect(topic).toHaveProperty("topic");
+							expect(topic).toHaveProperty("created_at");
+							expect(topic).toHaveProperty("votes");
+							expect(topic).toHaveProperty("article_img_url");
+							expect(topic).toHaveProperty("comment_count");
+							expect(topic).not.toHaveProperty("body");
 						});
+					});
+			});
+			test("GET:404, Returns error 404 when given a valid but non existant topic query", () => {
+				return request(app)
+					.get("/api/articles?topic=umbrella")
+					.expect(404)
+					.then(({ body }) => {
+						expect(body.msg).toBe("no articles found");
 					});
 			});
 		});
