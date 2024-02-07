@@ -1,4 +1,4 @@
-# Northcoders News API
+# NoodleTown News API
 A Reddit like API that integrates with postgresql
 
 ## Build and run instructions
